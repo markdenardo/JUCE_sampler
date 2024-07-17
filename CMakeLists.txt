@@ -8,3 +8,38 @@ add_executable(JUCE_sampler main.cpp
         Source/PluginProcessor.cpp
         Source/PluginEditor.h
         Source/PluginEditor.cpp)
+
+cmake_minimum_required(VERSION 3.15)
+
+project(MySampler VERSION 0.0.1)
+
+set(CMAKE_CXX_STANDARD 17)
+
+# Path to JUCE
+set(JUCE_DIR "/path/to/juce")
+
+add_subdirectory(${JUCE_DIR} JUCE)
+
+juce_add_plugin(MySampler
+        COMPANY_NAME "MyCompany"
+        IS_SYNTH TRUE
+        NEEDS_MIDI_INPUT TRUE
+        NEEDS_MIDI_OUTPUT FALSE
+        IS_MIDI_EFFECT FALSE
+        EDITOR_WANTS_KEYBOARD_FOCUS FALSE
+        PLUGIN_MANUFACTURER_CODE Juce
+        PLUGIN_CODE MSmr
+        FORMATS VST3
+        PRODUCT_NAME "MySampler")
+
+target_sources(MySampler PRIVATE
+        Source/PluginProcessor.cpp
+        Source/PluginEditor.cpp)
+
+target_compile_definitions(MySampler PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0)
+
+target_link_libraries(MySampler PRIVATE
+        juce::juce_audio_utils
+        juce::juce_dsp)
